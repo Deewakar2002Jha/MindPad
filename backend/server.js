@@ -17,8 +17,8 @@ app.use(clerkMiddleware({
 const notesRoutes = require('./routes/notes');
 const adminRoutes = require('./routes/admin');
 
-app.use('/notes', notesRoutes);
-app.use('/admin', adminRoutes);
+app.use(['/notes', '/api/notes'], notesRoutes);
+app.use(['/admin', '/api/admin'], adminRoutes);
 
 // Database connection
 mongoose.connect(process.env.MONGO_URI).then(() => {
