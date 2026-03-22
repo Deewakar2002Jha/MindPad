@@ -10,6 +10,7 @@ router.use(requireAdminAuth);
 
 router.get('/users', adminController.getUsers);
 router.get('/user-count', adminController.getUserCount);
+router.put('/profile', adminController.updateProfile);
 router.delete('/users/:id', adminController.deleteUser);
 router.put('/users/:id/ban', adminController.banUser);
 

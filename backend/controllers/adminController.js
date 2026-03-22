@@ -1,15 +1,16 @@
 const { clerkClient } = require('../middleware/auth');
 const jwt = require('jsonwebtoken');
+const Admin = require('../models/Admin');
+const bcrypt = require('bcryptjs');
 
 exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
-        const adminEmail = process.env.ADMIN_EMAIL || 'admin@mindpad.app';
-        const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';
+        const admin = await Admin.findOne({ email });
 
-        if (email === adminEmail && password === adminPassword) {
+        if (admin && await admin.comparePassword(password)) {
             const token = jwt.sign(
-                { email: adminEmail, role: 'admin' },
+                { id: admin._id, email: admin.email, role: 'admin' },
                 process.env.JWT_SECRET || 'fallback_secret_for_dev',
                 { expiresIn: '24h' }
             );
@@ -20,6 +21,25 @@ exports.login = async (req, res) => {
     } catch (error) {
         console.error('Admin Login Error:', error);
         res.status(500).json({ message: 'Server error during login' });
+    }
+};
+
+exports.updateProfile = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const adminId = req.admin.id; // From middleware
+
+        const admin = await Admin.findById(adminId);
+        if (!admin) return res.status(404).json({ message: 'Admin not found' });
+
+        if (email) admin.email = email;
+        if (password) admin.password = password; // Hashing will be done by pre-save hook
+
+        await admin.save();
+        res.status(200).json({ message: 'Admin profile updated successfully' });
+    } catch (error) {
+        console.error('Update Profile Error:', error);
+        res.status(500).json({ message: 'Server error updating profile' });
     }
 };
 

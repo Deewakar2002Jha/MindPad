@@ -27,28 +27,28 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="container" style={{ 
-      maxWidth: '440px', 
-      minHeight: '80vh', 
-      display: 'flex', 
-      alignItems: 'center', 
-      justifyContent: 'center' 
+    <div className="container" style={{
+      maxWidth: '440px',
+      minHeight: '80vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
     }}>
-      <div className="card fade-in-up" style={{ 
-        padding: '3rem', 
+      <div className="card fade-in-up" style={{
+        padding: '3rem',
         width: '100%',
         boxShadow: '0 20px 40px rgba(0,0,0,0.08)',
         borderRadius: '1.5rem',
         border: '1px solid var(--surface-lighter)'
       }}>
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-          <div style={{ 
-            backgroundColor: 'rgba(99, 102, 241, 0.1)', 
-            width: '72px', 
-            height: '72px', 
-            borderRadius: '1.5rem', 
-            display: 'flex', 
-            alignItems: 'center', 
+          <div style={{
+            backgroundColor: 'rgba(99, 102, 241, 0.1)',
+            width: '72px',
+            height: '72px',
+            borderRadius: '1.5rem',
+            display: 'flex',
+            alignItems: 'center',
             justifyContent: 'center',
             margin: '0 auto 1.5rem',
             boxShadow: '0 8px 16px rgba(99, 102, 241, 0.1)'
@@ -61,10 +61,10 @@ export default function AdminLogin() {
 
         <form onSubmit={handleSubmit}>
           <div className="form-group" style={{ marginBottom: '1.5rem' }}>
-            <label style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '0.5rem', 
+            <label style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
               fontWeight: '600',
               marginBottom: '0.5rem',
               fontSize: '0.85rem',
@@ -100,10 +100,10 @@ export default function AdminLogin() {
           </div>
 
           <div className="form-group" style={{ marginBottom: '2rem' }}>
-            <label style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '0.5rem', 
+            <label style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
               fontWeight: '600',
               marginBottom: '0.5rem',
               fontSize: '0.85rem',
@@ -138,13 +138,13 @@ export default function AdminLogin() {
             />
           </div>
 
-          <button 
-            type="submit" 
-            className="btn btn-primary" 
+          <button
+            type="submit"
+            className="btn btn-primary"
             disabled={loading}
-            style={{ 
-              width: '100%', 
-              padding: '1rem', 
+            style={{
+              width: '100%',
+              padding: '1rem',
               borderRadius: '0.75rem',
               fontWeight: '700',
               fontSize: '1rem',
