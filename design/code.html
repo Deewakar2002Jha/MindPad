@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary-dim": "#095e56",
+              "on-secondary": "#e3fff9",
+              "on-surface": "#2a3433",
+              "error-container": "#fa746f",
+              "on-tertiary": "#f2faff",
+              "on-surface-variant": "#56615f",
+              "surface-container-highest": "#d9e5e2",
+              "surface-dim": "#d1dcd9",
+              "error": "#a83836",
+              "tertiary-container": "#b6e7fe",
+              "outline-variant": "#a9b4b1",
+              "secondary": "#4b6460",
+              "secondary-fixed": "#cce8e3",
+              "surface-variant": "#d9e5e2",
+              "surface": "#f6faf8",
+              "inverse-surface": "#0a0f0e",
+              "primary-fixed-dim": "#9be2d7",
+              "inverse-primary": "#b1f9ee",
+              "tertiary-fixed": "#b6e7fe",
+              "surface-tint": "#1e6a62",
+              "on-primary-fixed": "#004841",
+              "on-tertiary-fixed": "#084355",
+              "tertiary-dim": "#27596c",
+              "on-secondary-fixed": "#2b4440",
+              "on-primary-container": "#065c54",
+              "tertiary-fixed-dim": "#a8d9ef",
+              "surface-container-low": "#eef5f3",
+              "error-dim": "#67040d",
+              "on-background": "#2a3433",
+              "secondary-dim": "#3f5854",
+              "on-tertiary-fixed-variant": "#2e6073",
+              "secondary-fixed-dim": "#bedad5",
+              "surface-container": "#e7f0ed",
+              "tertiary": "#346578",
+              "surface-container-high": "#e1eae7",
+              "outline": "#727d7b",
+              "on-tertiary-container": "#235669",
+              "on-secondary-fixed-variant": "#47605c",
+              "inverse-on-surface": "#999e9c",
+              "on-error-container": "#6e0a12",
+              "secondary-container": "#cce8e3",
+              "primary-fixed": "#a9f0e5",
+              "on-primary-fixed-variant": "#19665e",
+              "surface-container-lowest": "#ffffff",
+              "on-error": "#fff7f6",
+              "primary-container": "#a9f0e5",
+              "on-secondary-container": "#3d5653",
+              "primary": "#1e6a62",
+              "surface-bright": "#f6faf8",
+              "background": "#f6faf8",
+              "on-primary": "#e2fff9"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Manrope', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 w-full z-50 bg-[#f6faf8]/80 backdrop-blur-xl shadow-[0px_12px_32px_rgba(42,52,51,0.06)]">
+<nav class="flex justify-between items-center px-8 h-16 w-full max-w-7xl mx-auto">
+<div class="text-2xl font-black text-[#1e6a62] tracking-tight">VellumNotes</div>
+<div class="hidden md:flex gap-8 items-center font-manrope tracking-tight font-semibold">
+<a class="text-[#1e6a62] border-b-2 border-[#1e6a62] pb-1 transition-transform scale-95 active:scale-90" href="#">Dashboard</a>
+<a class="text-[#4b6460] hover:text-[#1e6a62] transition-colors duration-200" href="#">Shared</a>
+<a class="text-[#4b6460] hover:text-[#1e6a62] transition-colors duration-200" href="#">Archive</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden sm:flex gap-2">
+<button class="p-2 text-[#4b6460] hover:bg-[#e1eae7] rounded-xl transition-colors duration-200 material-symbols-outlined" data-icon="notifications">notifications</button>
+<button class="p-2 text-[#4b6460] hover:bg-[#e1eae7] rounded-xl transition-colors duration-200 material-symbols-outlined" data-icon="settings">settings</button>
+</div>
+<button class="bg-gradient-to-b from-primary to-primary-dim text-on-primary px-6 py-2.5 rounded-full font-manrope font-bold tracking-tight shadow-sm hover:opacity-90 active:scale-95 transition-all">
+                    Create Note
+                </button>
+</div>
+</nav>
+</header>
+<main class="flex-grow">
+<!-- Hero Section -->
+<section class="relative pt-24 pb-32 px-6 overflow-hidden">
+<!-- Background Elements -->
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-full -z-10 opacity-40">
+<div class="absolute top-0 right-0 w-96 h-96 bg-primary-container blur-[120px] rounded-full"></div>
+<div class="absolute bottom-0 left-0 w-80 h-80 bg-tertiary-container blur-[100px] rounded-full"></div>
+</div>
+<div class="max-w-5xl mx-auto text-center">
+<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface-container-high text-secondary text-xs font-bold tracking-widest uppercase mb-8 border border-outline-variant/10">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+                    Version 2.0 Now Live
+                </div>
+<h1 class="text-5xl md:text-7xl lg:text-8xl font-extrabold text-on-surface leading-[1.1] tracking-tighter mb-8 font-headline">
+                    Organize Your Notes <br/>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-tertiary">Effortlessly</span>
+</h1>
+<p class="text-lg md:text-xl text-secondary max-w-2xl mx-auto mb-12 leading-relaxed font-body">
+                    Experience a digital vellum that adapts to your creative flow. Capture thoughts, structure projects, and archive wisdom in an editorial-grade workspace.
+                </p>
+<div class="flex flex-col sm:flex-row items-center justify-center gap-6">
+<button class="w-full sm:w-auto px-10 py-5 bg-gradient-to-b from-primary to-primary-dim text-on-primary rounded-full font-headline font-bold text-lg shadow-[0px_12px_32px_rgba(30,106,98,0.25)] hover:scale-105 active:scale-95 transition-all">
+                        Get Started Free
+                    </button>
+<button class="w-full sm:w-auto px-10 py-5 bg-surface-container-highest/50 text-on-surface rounded-full font-headline font-bold text-lg hover:bg-surface-container-highest transition-all backdrop-blur-sm">
+                        View Demo
+                    </button>
+</div>
+</div>
+</section>
+<!-- Bento Grid Feature Section -->
+<section class="max-w-7xl mx-auto px-8 pb-32">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6 h-auto md:h-[600px]">
+<!-- Main Feature Card -->
+<div class="md:col-span-8 bg-surface-container-lowest p-10 rounded-[2rem] shadow-[0px_12px_32px_rgba(42,52,51,0.04)] flex flex-col justify-between relative overflow-hidden group">
+<div class="relative z-10">
+<span class="material-symbols-outlined text-primary text-4xl mb-6">edit_note</span>
+<h3 class="text-3xl font-headline font-extrabold text-on-surface mb-4">Focused Writing Environment</h3>
+<p class="text-secondary max-w-md">Our distraction-free editor uses generous white space and premium typography to make every word feel important.</p>
+</div>
+<div class="mt-12 relative h-48 md:h-64 rounded-xl overflow-hidden shadow-inner bg-surface-container-low border border-outline-variant/10">
+<img class="w-full h-full object-cover grayscale opacity-50 group-hover:scale-105 transition-transform duration-700" data-alt="Minimalist writing interface with clean typography" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBq8J9-GL-8aFBS-a8h8L2Llkw_3sfitUH7uu1kbNa_QJocoBNrruR5_eJhdAhWtCpncAWEF1GHKWICnrOnp9ucwm-Z0zk8YjPFNo_VnASPpJgubS-dcsZm-C6oguJCnR4ufs-Ygx-EPg3MTTySEZbtJkD2orHVWEIejus6Vx7aGc6g7uhyZ3wabjvBgy9vUziNnjuGXzeCxczn6mWsDwEahr0zZ331lZlVRBmfrphaC3l4xBP1RejGQENaRwmFEWnS7y4ioK1qpiM"/>
+</div>
+</div>
+<!-- Secondary Cards Stacked -->
+<div class="md:col-span-4 flex flex-col gap-6">
+<div class="flex-1 bg-primary text-on-primary p-8 rounded-[2rem] flex flex-col justify-center">
+<span class="material-symbols-outlined text-3xl mb-4">auto_awesome</span>
+<h3 class="text-xl font-headline font-bold mb-2">Smart Organization</h3>
+<p class="text-on-primary/80 text-sm">Automated tagging and collection sorting powered by intuitive intent mapping.</p>
+</div>
+<div class="flex-1 bg-surface-container p-8 rounded-[2rem] flex flex-col justify-center border border-outline-variant/5">
+<span class="material-symbols-outlined text-tertiary text-3xl mb-4">cloud_sync</span>
+<h3 class="text-xl font-headline font-bold mb-2 text-on-surface">Universal Sync</h3>
+<p class="text-secondary text-sm">Your vellum follows you across every device with editorial-grade consistency.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Aesthetic Highlight -->
+<section class="bg-surface-container-low py-24">
+<div class="max-w-7xl mx-auto px-8 flex flex-col md:flex-row items-center gap-16">
+<div class="w-full md:w-1/2">
+<div class="aspect-square rounded-[3rem] overflow-hidden shadow-2xl rotate-3 hover:rotate-0 transition-transform duration-500">
+<img class="w-full h-full object-cover" data-alt="High-quality fountain pen and leather notebook on a desk" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_atsmkJVYAULj0wQpaFg_WUZ7sVFM-7rj433FJGGN-IQW41vmOgcS084E8W9WZpYXMMQ1aWWEgUHBwt1F2SIDq4vj2lecuxfxIMQwMS25IojLFLa4gYk5c1ipQPWPV4Fx_W07QWLCtPzPgElGmjkMHsGHDM1gjT1AYLqcCew40WnDy6ZTrnEoXzSxX7nliLwSahoMo_hFpLglb39sWePHy_lBEGZQebPujYtd0XWu9hsgYR4yoEvsmx0MNNYf8edd1NEJMMx662M"/>
+</div>
+</div>
+<div class="w-full md:w-1/2">
+<h2 class="text-4xl md:text-5xl font-headline font-extrabold text-on-surface mb-6 leading-tight">Beyond a simple app. A tool for thinkers.</h2>
+<p class="text-secondary text-lg mb-8 leading-relaxed">
+                        VellumNotes isn't built for lists; it's built for insights. Our unique layering principle allows you to stack ideas like sheets of translucent paper, discovering connections you never knew existed.
+                    </p>
+<ul class="space-y-4">
+<li class="flex items-center gap-3 text-on-surface font-semibold">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+                            End-to-end encrypted journals
+                        </li>
+<li class="flex items-center gap-3 text-on-surface font-semibold">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+                            Asymmetrical grid layouts for inspiration
+                        </li>
+<li class="flex items-center gap-3 text-on-surface font-semibold">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+                            Markdown support with live preview
+                        </li>
+</ul>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-12 mt-auto bg-[#f6faf8] border-t border-[#a9b4b1]/10">
+<div class="flex flex-col md:flex-row justify-between items-center px-12 max-w-7xl mx-auto">
+<div class="mb-6 md:mb-0">
+<p class="font-inter text-xs tracking-wide text-[#a9b4b1] dark:text-slate-500">
+                    © 2024 Vellum Digital Workspace. Editorial Grade Note Taking.
+                </p>
+</div>
+<div class="flex gap-8 items-center font-inter text-xs tracking-wide">
+<a class="text-[#a9b4b1] hover:text-[#1e6a62] transition-opacity duration-200 opacity-80 hover:opacity-100" href="#">Privacy</a>
+<a class="text-[#a9b4b1] hover:text-[#1e6a62] transition-opacity duration-200 opacity-80 hover:opacity-100" href="#">Terms</a>
+<a class="text-[#a9b4b1] hover:text-[#1e6a62] transition-opacity duration-200 opacity-80 hover:opacity-100" href="#">Feedback</a>
+</div>
+</div>
+</footer>
+<!-- Floating Action Button for 'New Collection' - Suppressed on Landing as per logic unless user context changes, but keeping for visual flair as per modern UI standard -->
+<div class="fixed bottom-8 right-8 z-40 hidden md:block">
+<button class="group flex items-center gap-2 bg-primary/85 text-on-primary p-4 pr-6 rounded-full shadow-[0px_12px_32px_rgba(30,106,98,0.3)] backdrop-blur-md hover:scale-105 active:scale-95 transition-all">
+<span class="material-symbols-outlined bg-primary-container text-on-primary-container rounded-full p-2" style="font-variation-settings: 'FILL' 1;">add</span>
+<span class="font-headline font-bold text-sm tracking-tight">New Collection</span>
+</button>
+</div>
+</body></html>

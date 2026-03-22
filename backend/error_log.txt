@@ -1,0 +1,6 @@
+ValidationError: Note validation failed: userId: Path `userId` is required.
+    at model.validate (D:\New folder\backend\node_modules\mongoose\lib\document.js:2864:36)
+    at async model.$__save (D:\New folder\backend\node_modules\mongoose\lib\model.js:390:7)
+    at async model.save (D:\New folder\backend\node_modules\mongoose\lib\model.js:664:5)
+    at async model.create (D:\New folder\backend\node_modules\mongoose\lib\model.js:2751:5)
+    at async exports.createNote (D:\New folder\backend\controllers\notesController.js:12:25)
