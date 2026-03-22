@@ -15,7 +15,10 @@ export default function AdminPanel() {
 
   const fetchAdminData = async () => {
     try {
-      const token = await getToken();
+      const adminToken = localStorage.getItem('admin_token');
+      const clerkToken = await getToken();
+      const token = adminToken || clerkToken;
+      
       if (!token) return;
 
       const [usersRes, countRes] = await Promise.all([
@@ -39,7 +42,9 @@ export default function AdminPanel() {
 
   const handleDeleteUser = async (id) => {
     try {
-      const token = await getToken();
+      const adminToken = localStorage.getItem('admin_token');
+      const clerkToken = await getToken();
+      const token = adminToken || clerkToken;
       await deleteUser(id, token);
       toast.success('User deleted successfully');
       setDeletingId(null);
@@ -52,7 +57,9 @@ export default function AdminPanel() {
 
   const handleBanUser = async (id) => {
     try {
-      const token = await getToken();
+      const adminToken = localStorage.getItem('admin_token');
+      const clerkToken = await getToken();
+      const token = adminToken || clerkToken;
       await banUser(id, token);
       toast.success('User status updated');
       setBanningId(null);

@@ -14,6 +14,7 @@ import Pricing from './pages/Pricing';
 import Docs from './pages/Docs';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import AdminLogin from './pages/AdminLogin';
 
 function App() {
   const { user, isLoaded } = useUser();
@@ -22,7 +23,7 @@ function App() {
     return <div className="container" style={{ textAlign: 'center', marginTop: '5rem' }}>Loading application...</div>;
   }
 
-  const isAdmin = user?.publicMetadata?.role === 'admin';
+  const isAdmin = user?.publicMetadata?.role === 'admin' || localStorage.getItem('admin_token');
 
   return (
     <BrowserRouter>
@@ -53,9 +54,10 @@ function App() {
             <div className="container">
               {isAdmin 
                 ? <AdminPanel /> 
-                : <Navigate to={user ? "/dashboard" : "/login"} />}
+                : <Navigate to="/admin-login" />}
             </div>
           } />
+          <Route path="/admin-login" element={<AdminLogin />} />
         </Routes>
       </main>
       <Footer />

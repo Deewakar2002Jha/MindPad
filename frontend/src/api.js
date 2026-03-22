@@ -9,6 +9,7 @@ export const createNote = (data, token) => api.post('/notes', data, { headers: {
 export const updateNote = (id, data, token) => api.put(`/notes/${id}`, data, { headers: { Authorization: `Bearer ${token}` } });
 export const deleteNote = (id, token) => api.delete(`/notes/${id}`, { headers: { Authorization: `Bearer ${token}` } });
 
+export const adminLogin = (data) => api.post('/admin/login', data);
 export const getUsers = (token) => api.get('/admin/users', { headers: { Authorization: `Bearer ${token}` } });
 export const getUserCount = (token) => api.get('/admin/user-count', { headers: { Authorization: `Bearer ${token}` } });
 // Note: clerk delete user can be dangerous, but the requirement specifies it.

@@ -3,8 +3,10 @@ const router = express.Router();
 const { requireUserAuth, requireAdminAuth } = require('../middleware/auth');
 const adminController = require('../controllers/adminController');
 
-// All admin routes require basic auth AND admin auth
-router.use(requireUserAuth, requireAdminAuth);
+router.post('/login', adminController.login);
+
+// All other admin routes require admin auth (Clerk OR Custom JWT)
+router.use(requireAdminAuth);
 
 router.get('/users', adminController.getUsers);
 router.get('/user-count', adminController.getUserCount);
