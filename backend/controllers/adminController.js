@@ -9,20 +9,30 @@ exports.login = async (req, res) => {
         const { email, password } = req.body;
         console.log(`Admin Login Attempt: ${email}`);
         
-        // Ensure MongoDB is connected
+        // Ensure MongoDB is connected (Wait up to 2 seconds if connecting)
+        let attempts = 0;
+        while (mongoose.connection.readyState !== 1 && attempts < 10) {
+            console.log(`Waiting for DB... (Attempt ${attempts + 1})`);
+            await new Promise(resolve => setTimeout(resolve, 200));
+            attempts++;
+        }
+
         if (mongoose.connection.readyState !== 1) {
-            console.log("Database not ready, check connection string...");
+            console.error("CRITICAL: Database connection failed or timed out.");
             return res.status(503).json({ message: "Database is connecting, please try again in a moment" });
         }
 
         const admin = await Admin.findOne({ email });
         if (!admin) {
-            console.log("No admin found with this email");
+            console.log("LOGIN FAILED: Admin not found");
             return res.status(401).json({ message: 'Invalid admin credentials' });
         }
 
-        const isMatch = await admin.comparePassword(password);
+        // Use bcrypt directly for better reliability in serverless
+        const isMatch = await bcrypt.compare(password, admin.password);
+        
         if (isMatch) {
+            console.log("LOGIN SUCCESS: Issuing token");
             const token = jwt.sign(
                 { id: admin._id, email: admin.email, role: 'admin' },
                 process.env.JWT_SECRET || 'fallback_secret_for_dev',
@@ -30,12 +40,16 @@ exports.login = async (req, res) => {
             );
             return res.status(200).json({ token, role: 'admin' });
         } else {
-            console.log("Password mismatch");
+            console.log("LOGIN FAILED: Password mismatch");
             return res.status(401).json({ message: 'Invalid admin credentials' });
         }
     } catch (error) {
-        console.error('CRITICAL Admin Login Error:', error);
-        res.status(500).json({ message: 'Server error during login', details: error.message });
+        console.error('CRITICAL SERVER ERROR during admin login:', error);
+        res.status(500).json({ 
+            message: 'Server error during login', 
+            details: error.message,
+            stack: error.stack 
+        });
     }
 };
 
