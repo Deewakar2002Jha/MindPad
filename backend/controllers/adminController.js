@@ -74,22 +74,28 @@ exports.updateProfile = async (req, res) => {
 
 exports.getUsers = async (req, res) => {
     try {
+        // Ensure MongoDB connection is ready first
+        let attempts = 0;
+        while (mongoose.connection.readyState !== 1 && attempts < 10) {
+            await new Promise(resolve => setTimeout(resolve, 200));
+            attempts++;
+        }
+
         const users = await clerkClient.users.getUserList({
-            limit: 100, // adjust as needed
+            limit: 100,
         });
 
-        // Return required fields
         const formattedUsers = users.data.map(u => ({
             id: u.id,
             email: u.emailAddresses[0]?.emailAddress,
             role: u.publicMetadata?.role || 'user',
-            banned: u.banned, // Or use locked/banned according to Clerk's logic
+            banned: u.banned,
         }));
 
         res.status(200).json(formattedUsers);
     } catch (error) {
-        console.error('Error fetching users:', error);
-        res.status(500).json({ message: 'Server error fetching users' });
+        console.error('CRITICAL: Error fetching users from Clerk:', error);
+        res.status(500).json({ message: 'Server error fetching users', details: error.message });
     }
 };
 
@@ -98,8 +104,8 @@ exports.getUserCount = async (req, res) => {
         const count = await clerkClient.users.getCount();
         res.status(200).json({ count });
     } catch (error) {
-        console.error('Error fetching user count:', error);
-        res.status(500).json({ message: 'Server error fetching user count' });
+        console.error('CRITICAL: Error fetching user count from Clerk:', error);
+        res.status(500).json({ message: 'Server error fetching user count', details: error.message });
     }
 };
 
