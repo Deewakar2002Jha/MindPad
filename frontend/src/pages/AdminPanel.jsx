@@ -147,6 +147,24 @@ export default function AdminPanel() {
                 placeholder="new@email.com" 
                 value={newEmail} 
                 onChange={e => setNewEmail(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '0.75rem 1rem',
+                  borderRadius: '0.75rem',
+                  border: '1px solid var(--surface-lighter)',
+                  backgroundColor: 'var(--surface-color)',
+                  transition: 'all 0.2s ease',
+                  outline: 'none',
+                  marginTop: '0.5rem'
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = 'var(--primary-color)';
+                  e.target.style.boxShadow = '0 0 0 4px rgba(99, 102, 241, 0.1)';
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = 'var(--surface-lighter)';
+                  e.target.style.boxShadow = 'none';
+                }}
               />
             </div>
             <div className="form-group" style={{ marginBottom: 0 }}>
@@ -158,6 +176,24 @@ export default function AdminPanel() {
                 placeholder="Min. 8 characters" 
                 value={newPassword} 
                 onChange={e => setNewPassword(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '0.75rem 1rem',
+                  borderRadius: '0.75rem',
+                  border: '1px solid var(--surface-lighter)',
+                  backgroundColor: 'var(--surface-color)',
+                  transition: 'all 0.2s ease',
+                  outline: 'none',
+                  marginTop: '0.5rem'
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = 'var(--primary-color)';
+                  e.target.style.boxShadow = '0 0 0 4px rgba(99, 102, 241, 0.1)';
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = 'var(--surface-lighter)';
+                  e.target.style.boxShadow = 'none';
+                }}
               />
             </div>
             <button type="submit" className="btn btn-primary" style={{ height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
