@@ -1,15 +1,17 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useUser, Show } from '@clerk/react';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import { Toaster } from 'react-hot-toast';
 import Dashboard from './pages/Dashboard';
 import AdminPanel from './pages/AdminPanel';
 import Home from './pages/Home';
-// Note: We're replacing deprecated SignIn/SignUp components with standard routing 
-// since the quickstart specifies using the buttons or built-in flows, but since you 
-// asked for /login and /register routes, the best approach is to render the custom forms 
-// or redirect to Clerk Hosted UI. However, if using full custom components is needed,
-// Clerk still provides <SignIn routing="path" ... /> but we stick to the required buttons for simpler flow.
-// Actually, to provide a complete replacement that matches the prompt, let's use the buttons directly on the home page or navbar, but keeping the /login /register pathways using Show is also valid.
+import AboutUs from './pages/AboutUs';
+import Blog from './pages/Blog';
+import Careers from './pages/Careers';
+import Features from './pages/Features';
+import Pricing from './pages/Pricing';
+import Docs from './pages/Docs';
 import Login from './pages/Login';
 import Register from './pages/Register';
 
@@ -24,29 +26,39 @@ function App() {
 
   return (
     <BrowserRouter>
+      <Toaster position="top-right" reverseOrder={false} />
       <Navbar isAdmin={isAdmin} />
-      <div className="container">
+      <main>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={isAdmin ? <Navigate to="/admin" /> : <Home />} />
+          <Route path="/features" element={<Features />} />
+          <Route path="/pricing" element={<Pricing />} />
+          <Route path="/docs" element={<Docs />} />
+          <Route path="/about" element={<AboutUs />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/careers" element={<Careers />} />
           <Route path="/login/*" element={<Login />} />
           <Route path="/register/*" element={<Register />} />
           <Route path="/dashboard" element={
-            <>
+            <div className="container">
               <Show when="signed-in">
-                <Dashboard />
+                {isAdmin ? <Navigate to="/admin" /> : <Dashboard />}
               </Show>
               <Show when="signed-out">
                 <Navigate to="/login" />
               </Show>
-            </>
+            </div>
           } />
           <Route path="/admin" element={
-            isAdmin 
-              ? <AdminPanel /> 
-              : <Navigate to={user ? "/dashboard" : "/login"} />
+            <div className="container">
+              {isAdmin 
+                ? <AdminPanel /> 
+                : <Navigate to={user ? "/dashboard" : "/login"} />}
+            </div>
           } />
         </Routes>
-      </div>
+      </main>
+      <Footer />
     </BrowserRouter>
   );
 }

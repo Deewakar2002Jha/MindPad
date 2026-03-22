@@ -5,7 +5,7 @@ exports.getUsers = async (req, res) => {
         const users = await clerkClient.users.getUserList({
             limit: 100, // adjust as needed
         });
-        
+
         // Return required fields
         const formattedUsers = users.data.map(u => ({
             id: u.id,
@@ -45,10 +45,10 @@ exports.deleteUser = async (req, res) => {
 exports.banUser = async (req, res) => {
     try {
         const { id } = req.params;
-        
+
         // Clerk supports banUser or update user metadata. You can ban them officially using the API:
         const user = await clerkClient.users.banUser(id);
-        
+
         res.status(200).json({ message: 'User banned successfully', user });
     } catch (error) {
         console.error('Error banning user:', error);

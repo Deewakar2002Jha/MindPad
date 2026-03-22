@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@clerk/react';
+import toast from 'react-hot-toast';
+import Modal from '../components/Modal';
 import { getUsers, getUserCount, deleteUser, banUser } from '../api';
-import { Users, UserX, ShieldAlert } from 'lucide-react';
+import { Users, UserX, ShieldAlert, Trash2 } from 'lucide-react';
 
 export default function AdminPanel() {
   const { getToken } = useAuth();
   const [users, setUsers] = useState([]);
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [deletingId, setDeletingId] = useState(null);
+  const [banningId, setBanningId] = useState(null);
 
   const fetchAdminData = async () => {
     try {
@@ -22,6 +26,7 @@ export default function AdminPanel() {
       setUsers(usersRes.data);
       setCount(countRes.data.count);
     } catch (err) {
+      toast.error('Failed to fetch admin data');
       console.error('Failed to fetch admin data', err);
     } finally {
       setLoading(false);
@@ -33,46 +38,63 @@ export default function AdminPanel() {
   }, []);
 
   const handleDeleteUser = async (id) => {
-    if (!confirm('Are you absolutely sure you want to delete this user? This action cannot be undone.')) return;
     try {
       const token = await getToken();
       await deleteUser(id, token);
-      fetchAdminData(); // Refresh list
+      toast.success('User deleted successfully');
+      setDeletingId(null);
+      fetchAdminData();
     } catch (err) {
+      toast.error('Failed to delete user');
       console.error('Failed to delete user', err);
-      alert('Failed to delete user. Check console for details.');
     }
   };
 
   const handleBanUser = async (id) => {
-    if (!confirm('Are you sure you want to ban this user?')) return;
     try {
       const token = await getToken();
       await banUser(id, token);
-      fetchAdminData(); // Refresh list
+      toast.success('User status updated');
+      setBanningId(null);
+      fetchAdminData();
     } catch (err) {
+      toast.error('Failed to update status');
       console.error('Failed to ban user', err);
-      alert('Failed to ban user. Check console for details.');
     }
   };
 
   if (loading) {
-    return <div style={{ textAlign: 'center', padding: '2rem' }}>Loading Admin Panel...</div>;
+    return <div style={{ textAlign: 'center', padding: '5rem' }}>Loading Admin Panel...</div>;
   }
 
   return (
-    <div>
-      <h2 className="page-title" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-        <ShieldAlert size={32} color="var(--primary-color)" /> Admin Dashboard
+    <div className="fade-in-up">
+      <Modal 
+        isOpen={!!deletingId} 
+        onClose={() => setDeletingId(null)} 
+        onConfirm={() => handleDeleteUser(deletingId)}
+        title="Delete User"
+        message="Permanently remove this user? This cannot be undone."
+      />
+      <Modal 
+        isOpen={!!banningId} 
+        onClose={() => setBanningId(null)} 
+        onConfirm={() => handleBanUser(banningId)}
+        title="Account Status"
+        message="Are you sure you want to change this user's account status?"
+      />
+
+      <h2 className="page-title" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: '2rem' }}>
+        <ShieldAlert size={32} style={{ color: 'var(--primary-color)' }} /> Admin Dashboard
       </h2>
 
-      <div className="card" style={{ marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-        <div style={{ backgroundColor: 'rgba(59, 130, 246, 0.1)', padding: '1rem', borderRadius: '50%' }}>
-          <Users size={32} color="var(--primary-color)" />
+      <div className="card" style={{ marginBottom: '2rem', display: 'inline-flex', alignItems: 'center', gap: '1.5rem', padding: '1.5rem 2.5rem' }}>
+        <div style={{ backgroundColor: 'rgba(99, 102, 241, 0.1)', padding: '1.25rem', borderRadius: '1rem' }}>
+          <Users size={32} style={{ color: 'var(--primary-color)' }} />
         </div>
         <div>
-          <h3 style={{ fontSize: '1rem', color: 'var(--text-muted)' }}>Total Users</h3>
-          <p style={{ fontSize: '2rem', fontWeight: 'bold' }}>{count}</p>
+          <h3 style={{ fontSize: '0.875rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Users</h3>
+          <p style={{ fontSize: '2.5rem', fontWeight: '800' }}>{count}</p>
         </div>
       </div>
 
@@ -80,57 +102,59 @@ export default function AdminPanel() {
         <table>
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Email</th>
-              <th>Role</th>
+              <th>User ID</th>
+              <th>Identity</th>
+              <th>Privileges</th>
               <th>Status</th>
-              <th>Actions</th>
+              <th style={{ textAlign: 'right' }}>Management</th>
             </tr>
           </thead>
           <tbody>
             {users.map(u => (
               <tr key={u.id}>
-                <td style={{ fontFamily: 'monospace', fontSize: '0.875rem', color: 'var(--text-muted)' }}>{u.id}</td>
-                <td style={{ fontWeight: '500' }}>{u.email}</td>
+                <td style={{ fontFamily: 'monospace', fontSize: '0.75rem', color: 'var(--text-muted)' }}>{u.id}</td>
+                <td>
+                  <div style={{ fontWeight: '600' }}>{u.email}</div>
+                </td>
                 <td>
                   <span style={{
-                    padding: '0.25rem 0.75rem',
-                    borderRadius: '9999px',
-                    fontSize: '0.75rem',
-                    fontWeight: '600',
-                    backgroundColor: u.role === 'admin' ? 'rgba(59, 130, 246, 0.2)' : 'rgba(148, 163, 184, 0.2)',
+                    padding: '0.35rem 0.75rem',
+                    borderRadius: '0.5rem',
+                    fontSize: '0.7rem',
+                    fontWeight: '700',
+                    backgroundColor: u.role === 'admin' ? 'rgba(99, 102, 241, 0.1)' : 'var(--surface-lighter)',
                     color: u.role === 'admin' ? 'var(--primary-color)' : 'var(--text-muted)'
                   }}>
                     {u.role.toUpperCase()}
                   </span>
                 </td>
                 <td>
-                  {u.banned ? (
-                    <span style={{ color: 'var(--danger-color)', fontWeight: '600', fontSize: '0.875rem' }}>Banned</span>
-                  ) : (
-                    <span style={{ color: '#10b981', fontWeight: '600', fontSize: '0.875rem' }}>Active</span>
-                  )}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: u.banned ? '#ef4444' : '#10b981' }}></div>
+                    <span style={{ color: u.banned ? '#ef4444' : '#10b981', fontWeight: '600', fontSize: '0.875rem' }}>
+                      {u.banned ? 'Banned' : 'Active'}
+                    </span>
+                  </div>
                 </td>
                 <td>
-                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                  <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
                     <button
-                      className="btn"
-                      onClick={() => handleBanUser(u.id)}
+                      className="btn btn-sm"
+                      onClick={() => setBanningId(u.id)}
                       disabled={u.banned || u.role === 'admin'}
                       style={{
                         backgroundColor: u.banned ? 'var(--surface-color)' : 'rgba(245, 158, 11, 0.1)',
-                        color: u.banned ? 'var(--text-muted)' : 'var(--warn-color)',
+                        color: u.banned ? 'var(--text-muted)' : '#f59e0b',
                         opacity: u.banned || u.role === 'admin' ? 0.5 : 1,
-                        cursor: u.banned || u.role === 'admin' ? 'not-allowed' : 'pointer',
-                        padding: '0.5rem'
+                        cursor: u.banned || u.role === 'admin' ? 'not-allowed' : 'pointer'
                       }}
                       title="Ban User"
                     >
                       <UserX size={16} />
                     </button>
                     <button
-                      className="btn btn-danger"
-                      onClick={() => handleDeleteUser(u.id)}
+                      className="btn btn-sm btn-danger"
+                      onClick={() => setDeletingId(u.id)}
                       disabled={u.role === 'admin'}
                       style={{
                         opacity: u.role === 'admin' ? 0.5 : 1,
@@ -139,7 +163,7 @@ export default function AdminPanel() {
                       }}
                       title="Delete User"
                     >
-                      <UserX size={16} /> {/* Can use a different icon like Trash2 but UserX works */}
+                      <Trash2 size={16} />
                     </button>
                   </div>
                 </td>
