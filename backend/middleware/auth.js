@@ -1,10 +1,17 @@
 const jwt = require('jsonwebtoken');
 const { requireAuth, createClerkClient, clerkClient, getAuth } = require('@clerk/express');
 
-// The clerkClient instance is automatically initialized
+// Initialize Clerk client defensively to avoid top-level crashes
+const secretKey = process.env.CLERK_SECRET_KEY;
+const publishableKey = process.env.CLERK_PUBLISHABLE_KEY;
+
+if (!secretKey) {
+    console.error('CRITICAL ERROR: CLERK_SECRET_KEY is missing from your environment variables!');
+}
+
 const client = createClerkClient({ 
-    secretKey: process.env.CLERK_SECRET_KEY,
-    publishableKey: process.env.CLERK_PUBLISHABLE_KEY 
+    secretKey: secretKey || 'missing_secret_key',
+    publishableKey: publishableKey || 'missing_publishable_key' 
 });
 
 // Middleware for requiring a valid authenticated user
