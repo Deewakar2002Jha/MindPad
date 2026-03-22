@@ -2,13 +2,27 @@ const { clerkClient } = require('../middleware/auth');
 const jwt = require('jsonwebtoken');
 const Admin = require('../models/Admin');
 const bcrypt = require('bcryptjs');
+const mongoose = require('mongoose');
 
 exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
-        const admin = await Admin.findOne({ email });
+        console.log(`Admin Login Attempt: ${email}`);
+        
+        // Ensure MongoDB is connected
+        if (mongoose.connection.readyState !== 1) {
+            console.log("Database not ready, check connection string...");
+            return res.status(503).json({ message: "Database is connecting, please try again in a moment" });
+        }
 
-        if (admin && await admin.comparePassword(password)) {
+        const admin = await Admin.findOne({ email });
+        if (!admin) {
+            console.log("No admin found with this email");
+            return res.status(401).json({ message: 'Invalid admin credentials' });
+        }
+
+        const isMatch = await admin.comparePassword(password);
+        if (isMatch) {
             const token = jwt.sign(
                 { id: admin._id, email: admin.email, role: 'admin' },
                 process.env.JWT_SECRET || 'fallback_secret_for_dev',
@@ -16,11 +30,12 @@ exports.login = async (req, res) => {
             );
             return res.status(200).json({ token, role: 'admin' });
         } else {
+            console.log("Password mismatch");
             return res.status(401).json({ message: 'Invalid admin credentials' });
         }
     } catch (error) {
-        console.error('Admin Login Error:', error);
-        res.status(500).json({ message: 'Server error during login' });
+        console.error('CRITICAL Admin Login Error:', error);
+        res.status(500).json({ message: 'Server error during login', details: error.message });
     }
 };
 
