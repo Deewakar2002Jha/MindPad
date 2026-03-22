@@ -31,7 +31,7 @@ function App() {
       <Navbar isAdmin={isAdmin} />
       <main>
         <Routes>
-          <Route path="/" element={isAdmin ? <Navigate to="/admin" /> : <Home />} />
+          <Route path="/" element={<Home />} />
           <Route path="/features" element={<Features />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/docs" element={<Docs />} />

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@clerk/react';
 import toast from 'react-hot-toast';
 import Modal from '../components/Modal';
